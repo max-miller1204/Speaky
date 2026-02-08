@@ -1,5 +1,5 @@
 {
-  description = "Handy - A free, open source, and extensible speech-to-text application that works completely offline";
+  description = "Speaky - A free, open source, and extensible speech-to-text application";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -19,12 +19,12 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       # AppImage-based package
-      handy-appimage = let
+      speaky-appimage = let
         appimage = pkgs.appimageTools.wrapType2 {
-          pname = "handy-appimage-unwrapped";
+          pname = "speaky-appimage-unwrapped";
           inherit version;
           src = pkgs.fetchurl {
-            url = "https://github.com/cjpais/Handy/releases/download/v${version}/Handy_${version}_amd64.AppImage";
+            url = "https://github.com/max-miller1204/Speaky/releases/download/v${version}/Speaky_${version}_amd64.AppImage";
             hash = "sha256-tTswFYLCPGtMbHAb2bQMsklRiRCVXLrtu4pQC8IHdqQ=";
           };
           extraPkgs = p:
@@ -33,12 +33,12 @@
             ];
         };
       in
-        pkgs.writeShellScriptBin "handy" ''
+        pkgs.writeShellScriptBin "speaky" ''
           export WEBKIT_DISABLE_DMABUF_RENDERER=1
-          exec ${appimage}/bin/handy-appimage-unwrapped "$@"
+          exec ${appimage}/bin/speaky-appimage-unwrapped "$@"
         '';
 
-      default = self.packages.${system}.handy-appimage;
+      default = self.packages.${system}.speaky-appimage;
     });
 
     # Development shell for building from source
@@ -79,7 +79,7 @@
         LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath [ pkgs.libappindicator ]}";
 
         shellHook = ''
-          echo "Handy development environment"
+          echo "Speaky development environment"
           bun install
           echo "Run 'bun run tauri dev' to start"
         '';
